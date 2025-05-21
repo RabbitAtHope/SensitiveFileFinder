@@ -30,11 +30,14 @@ def scan(folder_path):
                 if file.lower().endswith(extension):
                     filePath = os.path.join(root, file)
                     filePath = filePath.replace(file, f"{bcolors.FAIL}"+file+f"{bcolors.ENDC}")
+                    filePath = filePath.replace(directory, "").replace("\\","/")
+                    print(f" 📄 {bcolors.RED}" + filePath + f"{bcolors.ENDC}")
                     foundFiles.append(filePath)
     return foundFiles
 
 sensitiveExtensions = [
     ".aws",
+    ".bash_history",
     ".dockercfg",
     ".dockerconfigjson",
     ".env",
@@ -54,9 +57,5 @@ directories = [
 for directory in directories:
     print(f"📁 {bcolors.WARNING}"+directory+f"{bcolors.ENDC}")    
     files = scan(directory)
-    if files:
-        for f in files:
-            f = f.replace(directory, "").replace("\\","/")
-            print(f" 📄 {bcolors.RED}"+f+f"{bcolors.ENDC}")
-    else:
+    if not files:
         print(f" ✅ {bcolors.OKGREEN}Nothing found.{bcolors.ENDC}")
